@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misi Agen Matematika: Konsep & Jenis Sudut</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Layout per view */
+        .view-section {
+            display: none;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .view-active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden bg-slate-50 flex flex-col font-sans text-slate-800 transition-colors duration-500" id="app-body">
+
+    <!-- GLOBAL HEADER -->
+    <header id="global-header" class="hidden bg-indigo-600 text-white p-4 shadow-md flex items-center justify-between shrink-0 z-10">
+        <div class="flex items-center gap-4">
+            <button onclick="navigateTo('menu')" class="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Kembali ke Menu Utama">
+                <i data-lucide="home" class="w-6 h-6"></i>
+            </button>
+            <div>
+                <h1 id="header-title" class="text-2xl font-bold tracking-wide leading-tight">Judul Misi</h1>
+                <p id="header-subtitle" class="text-indigo-200 text-sm">Subjudul Misi</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="header-player-info" class="bg-indigo-800 px-4 py-1.5 rounded-full font-semibold flex items-center">
+                <i data-lucide="user" class="w-4 h-4 mr-2"></i> <span id="header-player-name">Nama</span>
+            </div>
+            <button onclick="toggleFullscreen()" class="btn-fullscreen bg-indigo-800/50 hover:bg-indigo-800 p-2 rounded-full transition-colors" title="Toggle Fullscreen">
+                <i data-lucide="maximize" class="w-5 h-5 fs-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main id="main-content" class="flex-grow relative w-full h-full overflow-hidden">
+
+        <!-- ================= INTRO VIEW ================= -->
+        <div id="view-intro" class="view-section flex-col items-center justify-center p-6 bg-gradient-to-br from-indigo-500 to-purple-600">
+            <button onclick="toggleFullscreen()" class="btn-fullscreen absolute top-4 right-4 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors text-white backdrop-blur-sm z-20">
+                <i data-lucide="maximize" class="w-6 h-6 fs-icon"></i>
+            </button>
+
+            <div class="bg-white text-slate-800 p-8 rounded-3xl shadow-2xl max-w-5xl w-full border-4 border-indigo-200 flex flex-col md:flex-row gap-8 items-center h-full max-h-[85vh]">
+                
+                <!-- Kolom Pesan Pak Rahmat -->
+                <div class="bg-indigo-50 p-6 rounded-2xl border-2 border-indigo-100 text-center relative flex-1 flex flex-col justify-center h-full">
+                    <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-indigo-600 text-white w-20 h-20 rounded-full flex items-center justify-center border-4 border-white shadow-lg overflow-hidden">
+                        <img src="https://i.imgur.com/YbvvB0o.jpeg" alt="Pak Rahmat" class="w-full h-full object-cover" />
+                    </div>
+                    <h2 class="text-2xl font-bold text-indigo-800 mt-8 mb-3">Pengantar Pak Rahmat</h2>
+                    <p class="text-lg leading-snug text-indigo-900 italic font-medium overflow-y-auto max-h-[40vh] custom-scrollbar px-2">
+                        "Halo, agen-agen cilik! Bapak Rahmat di sini. Selamat datang di <strong class="text-indigo-700">Misi Agen Matematika</strong>! 🕵️‍♂️📐<br/><br/>
+                        Misi kita hari ini adalah menyelidiki dan memecahkan misteri menggunakan <strong>Konsep Sudut, Jenis-Jenis Sudut, dan Busur Derajat</strong>. Pelajari dengan teliti semua petunjuk yang ada. Daftarkan identitasmu untuk memulai operasi!"
+                    </p>
+                </div>
+
+                <!-- Kolom Form Input -->
+                <div class="flex-1 flex flex-col justify-center h-full space-y-4">
+                    <h1 class="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">Pendaftaran Agen</h1>
+                    
+                    <div class="space-y-1">
+                        <label class="text-lg font-bold text-gray-700 flex items-center">
+                            <i data-lucide="user" class="mr-2 w-5 h-5 text-indigo-500"></i> Nama Lengkap Agen
+                        </label>
+                        <input type="text" id="input-name" placeholder="Ketik namamu di sini..." class="w-full p-3 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-200" oninput="updateIntroState()">
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-lg font-bold text-gray-700 flex items-center">
+                            <i data-lucide="building" class="mr-2 w-5 h-5 text-purple-500"></i> Asal Sekolah
+                        </label>
+                        <input type="text" id="input-school" placeholder="Contoh: SDN 1 Nusantara" class="w-full p-3 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-200" oninput="updateIntroState()">
+                    </div>
+
+                    <button id="btn-start" disabled onclick="navigateTo('menu')" class="w-full mt-4 text-xl font-bold py-4 px-6 rounded-xl transition-all shadow-xl flex items-center justify-center bg-gray-300 text-gray-500 cursor-not-allowed">
+                        Mulai Petualangan <i data-lucide="play" class="ml-2 w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MENU VIEW ================= -->
+        <div id="view-menu" class="view-section flex-col bg-slate-100">
+            <header class="bg-indigo-600 text-white p-4 shadow-md flex justify-between items-center w-full shrink-0">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="triangle-right" class="w-8 h-8 text-yellow-300"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold leading-tight">Menu Utama Misi</h1>
+                        <p class="text-indigo-200 text-sm">Asesmen AKM Matematika: Konsep & Jenis Sudut</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="font-bold text-lg leading-tight" id="menu-player-name">Nama</p>
+                        <p class="text-indigo-200 text-xs" id="menu-player-school">Sekolah</p>
+                    </div>
+                    <button onclick="toggleFullscreen()" class="btn-fullscreen bg-indigo-800 p-2 rounded-full text-white">
+                        <i data-lucide="maximize" class="w-5 h-5 fs-icon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex-grow p-6 w-full flex flex-col justify-center items-center max-w-7xl mx-auto h-full">
+                
+                <!-- BUKU PANDUAN / RANGKUMAN BANNER -->
+                <button onclick="navigateTo('rangkuman')" class="w-full max-w-6xl mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-3xl p-6 shadow-lg flex items-center justify-between transition-transform transform hover:-translate-y-1 shrink-0">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
+                            <i data-lucide="book-open" class="w-10 h-10 text-yellow-300"></i>
+                        </div>
+                        <div class="text-left">
+                            <h2 class="text-3xl font-extrabold tracking-wide">Buku Panduan Agen</h2>
+                            <p class="text-indigo-100 mt-1 font-medium text-lg">Pelajari Rangkuman Materi Pengukuran & Jenis Sudut di sini!</p>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center text-xl font-bold bg-white text-purple-600 px-6 py-3 rounded-full shadow-md">
+                        Baca Materi <i data-lucide="arrow-right" class="ml-2 w-6 h-6"></i>
+                    </div>
+                </button>
+
+                <h2 class="text-2xl font-bold text-center text-slate-800 mb-4 shrink-0">Pilih Misi yang Ingin Dikerjakan</h2>
+                
+                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 w-full max-w-6xl shrink-0">
+                    <!-- Cards dinamis di-render melalui JS -->
+                </div>
+
+                <div class="mt-8 shrink-0">
+                    <button onclick="navigateTo('result')" class="bg-slate-800 hover:bg-slate-900 text-white text-2xl font-bold py-4 px-10 rounded-full flex items-center shadow-xl transition-transform hover:scale-105">
+                        Lihat Laporan Akhir <i data-lucide="award" class="ml-3 w-8 h-8 text-yellow-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RANGKUMAN MATERI ================= -->
+        <div id="view-rangkuman" class="view-section flex-col p-6 items-center justify-center bg-slate-50">
+            <div class="bg-white p-8 w-full max-w-5xl rounded-3xl shadow-xl flex flex-col h-[85vh]">
+                
+                <div class="flex-grow overflow-y-auto custom-scrollbar pr-4 space-y-6">
+                    <div class="bg-indigo-50 border-l-8 border-indigo-500 p-6 rounded-2xl shadow-sm">
+                        <h2 class="text-2xl font-extrabold text-indigo-800 mb-3">Apa itu Sudut?</h2>
+                        <p class="text-lg text-slate-700">Sudut dibentuk oleh dua garis lurus yang bertemu pada satu titik pangkal. Alat untuk mengukur besar sudut secara akurat disebut <strong>Penggaris Busur (Busur Derajat)</strong>. Satuan ukuran sudut adalah <strong>Derajat (°)</strong>.</p>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-slate-800 pt-2 border-t-2 border-gray-100">Jenis-Jenis Sudut</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base font-bold text-center">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-b-4 border-green-400">
+                            <span class="block text-xl text-green-600 mb-1">Lancip</span>
+                            <span class="text-sm text-gray-500 font-normal">Kurang dari 90°</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-b-4 border-blue-400">
+                            <span class="block text-xl text-blue-600 mb-1">Siku-siku</span>
+                            <span class="text-sm text-gray-500 font-normal">Tepat 90°</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-b-4 border-orange-400">
+                            <span class="block text-xl text-orange-600 mb-1">Tumpul</span>
+                            <span class="text-sm text-gray-500 font-normal">Antara 90° - 180°</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-b-4 border-purple-400">
+                            <span class="block text-xl text-purple-600 mb-1">Lurus</span>
+                            <span class="text-sm text-gray-500 font-normal">Tepat 180°</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border-l-8 border-purple-500 p-6 rounded-2xl shadow-sm mt-6">
+                        <h2 class="text-2xl font-extrabold text-purple-800 mb-3">Sudut pada Bangun Datar</h2>
+                        <p class="text-lg text-slate-700 mb-4">Jika kita menjumlahkan semua sudut di dalam sebuah bangun datar, hasilnya selalu tetap!</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg font-bold text-purple-900 text-center">
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-200">
+                                <i data-lucide="triangle" class="w-12 h-12 mx-auto text-pink-500 mb-2"></i>
+                                Segitiga <br> <span class="text-2xl text-pink-600">= 180°</span>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-200">
+                                <i data-lucide="square" class="w-12 h-12 mx-auto text-blue-500 mb-2"></i>
+                                Segiempat <br> <span class="text-2xl text-blue-600">= 360°</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 shrink-0 flex justify-end pt-4 border-t-2 border-gray-100">
+                    <button onclick="navigateTo('menu')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xl font-bold py-3 px-8 rounded-xl flex items-center shadow-md">
+                        Kembali ke Menu <i data-lucide="home" class="ml-2 w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MISSION (AKM Split Screen) ================= -->
+        <div id="view-mission" class="view-section flex-col p-6 items-center justify-center bg-slate-50">
+            <div class="bg-white p-6 w-full max-w-7xl rounded-3xl shadow-xl flex flex-col md:flex-row gap-6 h-[85vh]">
+                
+                <!-- KIRI: Stimulus Panel -->
+                <div class="md:w-5/12 bg-indigo-50 border-2 border-indigo-100 rounded-2xl p-6 flex flex-col h-full shrink-0">
+                    <div class="flex items-center gap-2 mb-4 border-b-2 border-indigo-200 pb-3 shrink-0">
+                        <i data-lucide="file-text" class="text-indigo-600 w-6 h-6"></i>
+                        <h2 class="text-xl font-bold text-indigo-800 uppercase tracking-widest text-sm" id="mission-stimulus-title">Stimulus</h2>
+                    </div>
+                    <div class="flex-grow overflow-y-auto custom-scrollbar pr-2 text-lg text-slate-700 leading-relaxed text-justify" id="mission-stimulus-text">
+                        <!-- Stimulus text dinamis -->
+                    </div>
+                </div>
+
+                <!-- KANAN: Interactive Panel -->
+                <div class="md:w-7/12 flex flex-col h-full bg-white rounded-2xl border-2 border-gray-100 p-6 relative">
+                    <!-- Dynamic Content -->
+                    <div id="mission-interactive-area" class="flex-grow overflow-y-auto custom-scrollbar flex flex-col">
+                        <!-- Konten Interaktif Masuk Sini Berdasarkan Tipe -->
+                    </div>
+
+                    <!-- Footer / Navigasi Bawah -->
+                    <div id="mission-footer" class="flex justify-between items-center mt-4 pt-4 border-t-2 border-gray-100 shrink-0">
+                        <!-- Diisi tombol secara dinamis -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= MISI 6: Kreasi ================= -->
+        <div id="view-kreasi" class="view-section flex-col p-6 items-center justify-center bg-slate-50">
+            <div class="bg-white p-6 w-full max-w-7xl rounded-3xl shadow-xl flex flex-col md:flex-row gap-6 h-[85vh]">
+                
+                <!-- KIRI: Stimulus Panel -->
+                <div class="md:w-5/12 bg-indigo-50 border-2 border-indigo-100 rounded-2xl p-6 flex flex-col h-full shrink-0">
+                    <div class="flex items-center gap-2 mb-4 border-b-2 border-indigo-200 pb-3 shrink-0">
+                        <i data-lucide="file-text" class="text-indigo-600 w-6 h-6"></i>
+                        <h2 class="text-xl font-bold text-indigo-800 uppercase tracking-widest text-sm">Stimulus 6</h2>
+                    </div>
+                    <div class="flex-grow overflow-y-auto custom-scrollbar pr-2 text-lg text-slate-700 leading-relaxed">
+                        <p class="mb-4 text-justify">
+                            Sebagai agen ahli, kamu ditugaskan untuk mendesain cetak biru sebuah ruangan rahasia berbentuk bangun datar.
+                        </p>
+                        <div class="bg-orange-100 p-4 rounded-xl border border-orange-200">
+                            <h4 class="font-bold text-orange-800 mb-2">Tugasmu:</h4>
+                            <p class="font-semibold text-slate-800 mb-1">Buatlah deskripsi rancangan ruanganmu dengan ketentuan:</p>
+                            <ul class="list-disc ml-5 text-base text-slate-800 space-y-1">
+                                <li>Sebutkan bentuk bangun datar yang kamu pilih (Segitiga/Segiempat).</li>
+                                <li>Sebutkan <strong>ukuran masing-masing sudutnya</strong>.</li>
+                                <li>Pastikan total jumlah sudutnya sesuai dengan aturan (Segitiga = 180°, Segiempat = 360°).</li>
+                                <li>Sebutkan jenis sudut apa saja yang ada di dalam desainmu (Lancip, Siku-siku, atau Tumpul).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KANAN: Textarea Panel -->
+                <div class="md:w-7/12 flex flex-col h-full bg-white rounded-2xl border-2 border-gray-100 p-6 relative">
+                    <div class="flex justify-between items-center mb-4 pb-4 border-b-2 border-gray-100 shrink-0">
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center">
+                            <i data-lucide="edit-3" class="mr-2 text-green-600"></i> Lembar Kerja Agen
+                        </h2>
+                    </div>
+                    <textarea id="kreasi-input" oninput="state.kreasiAnswer = this.value" placeholder="Ketik deskripsi desain ruanganmu di sini..." class="flex-grow w-full p-4 text-lg border-2 border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 resize-none custom-scrollbar"></textarea>
+                    
+                    <div class="mt-4 shrink-0 flex justify-end pt-4 border-t-2 border-gray-100">
+                        <button onclick="navigateTo('menu')" class="bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-3 px-8 rounded-xl flex items-center shadow-md">
+                            Simpan Jawaban <i data-lucide="home" class="ml-2 w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= RESULT VIEW ================= -->
+        <div id="view-result" class="view-section flex-col bg-slate-100 p-4 relative">
+            <div class="absolute top-4 right-4 flex gap-3 z-20">
+                <button onclick="navigateTo('menu')" class="bg-white hover:bg-gray-100 text-indigo-800 p-2.5 rounded-full shadow-md transition-colors">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                </button>
+                <button onclick="toggleFullscreen()" class="btn-fullscreen bg-white hover:bg-gray-100 text-indigo-800 p-2.5 rounded-full shadow-md transition-colors">
+                    <i data-lucide="maximize" class="w-5 h-5 fs-icon"></i>
+                </button>
+            </div>
+    
+            <div class="max-w-7xl mx-auto w-full bg-white rounded-3xl shadow-xl border-4 border-indigo-500 flex flex-col h-full overflow-hidden">
+                <div class="bg-indigo-600 text-white p-4 flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-4">
+                        <i data-lucide="award" class="w-12 h-12 text-yellow-300"></i>
+                        <div>
+                            <h1 class="text-2xl font-bold leading-tight">Laporan Penilaian AKM</h1>
+                            <p class="text-indigo-200 text-sm" id="res-identity">Nama - Sekolah</p>
+                        </div>
+                    </div>
+                    <button onclick="resetAll()" class="flex items-center bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-sm transition-colors mr-20">
+                        <i data-lucide="refresh-ccw" class="mr-2 w-4 h-4"></i> Ulang
+                    </button>
+                </div>
+    
+                <div class="p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow overflow-hidden">
+                    <!-- Skor Otomatis -->
+                    <div class="lg:col-span-5 bg-gradient-to-b from-indigo-50 to-white p-5 rounded-2xl border-2 border-indigo-100 shadow-sm text-center flex flex-col h-full">
+                        <h3 class="text-lg font-bold text-gray-600 mb-2 shrink-0">Total Skor Sistem Otomatis</h3>
+                        <div class="flex-grow flex items-center justify-center">
+                            <div class="text-7xl font-black text-indigo-600 drop-shadow-sm" id="res-score">0</div>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium mb-4 shrink-0">Maksimal 100 Poin (5 Misi x 20 Poin)</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-sm shrink-0">
+                            <div class="bg-white p-2 rounded-lg border border-gray-200 flex justify-between"><span>Misi 1 (PG):</span> <span id="r-m1" class="font-bold text-indigo-700">0/20</span></div>
+                            <div class="bg-white p-2 rounded-lg border border-gray-200 flex justify-between"><span>Misi 2 (B/S):</span> <span id="r-m2" class="font-bold text-indigo-700">0/20</span></div>
+                            <div class="bg-white p-2 rounded-lg border border-gray-200 flex justify-between"><span>Misi 3 (Match):</span> <span id="r-m3" class="font-bold text-indigo-700">0/20</span></div>
+                            <div class="bg-white p-2 rounded-lg border border-gray-200 flex justify-between"><span>Misi 4 (Isian):</span> <span id="r-m4" class="font-bold text-indigo-700">0/20</span></div>
+                            <div class="bg-white p-2 rounded-lg border border-gray-200 col-span-2 flex justify-between"><span>Misi 5 (Rumpang):</span> <span id="r-m5" class="font-bold text-indigo-700">0/20</span></div>
+                        </div>
+                    </div>
+    
+                    <!-- Penilaian Guru -->
+                    <div class="lg:col-span-7 flex flex-col h-full bg-yellow-50 rounded-2xl border-2 border-yellow-200 overflow-hidden">
+                        <div class="bg-yellow-200 p-3 px-4 flex items-center shrink-0">
+                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-yellow-700"></i>
+                            <h2 class="text-lg font-bold text-yellow-800">Area Penilaian Manual (Guru)</h2>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow overflow-hidden">
+                            <h3 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wider shrink-0">Misi 6: Tantangan Kreasi Sudut (Esai)</h3>
+                            <div class="text-base bg-white border border-yellow-300 p-4 rounded-xl shadow-inner whitespace-pre-line flex-grow overflow-y-auto custom-scrollbar" id="res-kreasi"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA SOAL BERAGAM TENTANG SUDUT (KELAS 5 SD) ---
+        const MISSIONS_DATA = {
+            1: {
+                type: 'pg',
+                title: "Misi 1: Pilihan Ganda (Konsep Sudut)",
+                stimulusTitle: "Investigasi Ruangan",
+                stimulusText: "Agen Raka sedang menyelidiki sebuah ruangan rahasia. Ia memperhatikan benda-beden di sekitarnya. Pintu ruangan terbuka sedikit membentuk sudut yang sempit. Meja di tengah ruangan berbentuk persegi panjang dengan ujung-ujungnya yang tegak lurus. Ada juga jam dinding yang saat ini menunjukkan tepat pukul 15.00 sore. Raka tahu bahwa bukaan antara dua garis yang bertemu di satu titik itulah yang disebut sudut.",
+                items: [
+                    { id: 'q1', text: "Jam dinding menunjukkan pukul 15.00. Jenis sudut yang dibentuk oleh jarum jam dan menit adalah...", options: ["Sudut Lancip", "Sudut Tumpul", "Sudut Siku-siku", "Sudut Lurus"], answer: 2 },
+                    { id: 'q2', text: "Ujung-ujung meja persegi panjang yang dilihat Raka membentuk sudut siku-siku. Besar sudut tersebut adalah...", options: ["45°", "90°", "180°", "360°"], answer: 1 },
+                    { id: 'q3', text: "Pintu yang terbuka sedikit membentuk sudut yang sempit (kurang dari 90°). Jenis sudut ini dinamakan...", options: ["Sudut Siku-siku", "Sudut Lancip", "Sudut Tumpul", "Sudut Lurus"], answer: 1 },
+                    { id: 'q4', text: "Garis lurus di lantai ruangan tersebut membentuk sudut...", options: ["90°", "180°", "270°", "360°"], answer: 1 },
+                    { id: 'q5', text: "Satuan ukur yang digunakan Raka untuk menyatakan besar sudut adalah...", options: ["Meter", "Kilogram", "Celcius", "Derajat"], answer: 3 }
+                ]
+            },
+            2: {
+                type: 'bs',
+                title: "Misi 2: Benar / Salah (Mengukur Sudut)",
+                stimulusTitle: "Cetak Biru (Blueprint)",
+                stimulusText: "Di atas meja, Raka menemukan cetak biru bangunan markas. Raka mengeluarkan penggaris busur (busur derajat) miliknya untuk memastikan ukuran di cetak biru tersebut. Tertulis bahwa kemiringan atap markas adalah 120°, kemiringan tangga adalah 30°, dan dinding berbatasan dengan lantai membentuk sudut 90°. Untuk mengukurnya, Raka meletakkan titik pusat busur tepat di titik sudut gambar.",
+                items: [
+                    { id: 'q1', text: "Sudut kemiringan atap sebesar 120° merupakan jenis sudut tumpul.", answer: true },
+                    { id: 'q2', text: "Sudut kemiringan tangga sebesar 30° merupakan jenis sudut siku-siku.", answer: false }, // Lancip
+                    { id: 'q3', text: "Dinding dan lantai yang membentuk sudut 90° berarti saling tegak lurus.", answer: true },
+                    { id: 'q4', text: "Untuk mengukur sudut pada gambar, kita dapat menggunakan penggaris lurus biasa.", answer: false }, // Harus busur derajat
+                    { id: 'q5', text: "Cara mengukur dengan busur adalah meletakkan titik tengah busur pada titik pertemuan dua garis (titik sudut).", answer: true }
+                ]
+            },
+            3: {
+                type: 'match',
+                title: "Misi 3: Menjodohkan (Jenis & Besar Sudut)",
+                stimulusTitle: "Klasifikasi Sudut",
+                stimulusText: "Agen Raka berhasil membuka brankas pertama. Di dalamnya terdapat sebuah peta dengan berbagai macam instruksi pergerakan. Instruksi tersebut menggunakan istilah-istilah matematika terkait sudut dan bangun datar. Pasangkanlah istilah-istilah tersebut dengan besar derajat yang paling tepat agar peta dapat terbaca dengan benar!",
+                left: [
+                    { id: 'l1', text: "Sudut Siku-siku" },
+                    { id: 'l2', text: "Sudut Lurus" },
+                    { id: 'l3', text: "Sudut Lancip" },
+                    { id: 'l4', text: "Sudut Tumpul" },
+                    { id: 'l5', text: "Jumlah Total Sudut Segiempat" }
+                ],
+                right: [
+                    { id: 'r1', text: "Tepat 90°" },
+                    { id: 'r2', text: "Tepat 180°" },
+                    { id: 'r3', text: "Kurang dari 90°" },
+                    { id: 'r4', text: "Antara 90° dan 180°" },
+                    { id: 'r5', text: "Tepat 360°" }
+                ],
+                answers: { 'l1': 'r1', 'l2': 'r2', 'l3': 'r3', 'l4': 'r4', 'l5': 'r5' }
+            },
+            4: {
+                type: 'isian',
+                title: "Misi 4: Isian Singkat (Sudut Bangun Datar)",
+                stimulusTitle: "Sandi Rahasia Segitiga",
+                stimulusText: "Di pintu terakhir, Raka harus memasukkan kode angka berdasarkan gambar-gambar bangun datar. Ingat rumus agen: Jumlah seluruh sudut dalam segitiga selalu 180°, sedangkan pada segiempat jumlahnya selalu 360°. Bantulah Raka mencari besar sudut yang hilang (X) untuk membuka pintu markas!",
+                items: [
+                    { id: 'q1', text: "Sebuah segitiga memiliki sudut 60° dan 50°. Berapakah besar sudut ketiga (X)?", answer: ["70", "70°", "70 derajat"] },
+                    { id: 'q2', text: "Sebuah segitiga siku-siku memiliki satu sudut lancip sebesar 45°. Berapakah besar sudut lancip yang satunya?", answer: ["45", "45°", "45 derajat"] },
+                    { id: 'q3', text: "Sebuah segiempat sembarang memiliki tiga sudut sebesar 100°, 80°, dan 90°. Berapakah sudut keempat?", answer: ["90", "90°", "90 derajat"] },
+                    { id: 'q4', text: "Sebuah segitiga memiliki sudut 100° dan 40°. Berapakah besar sudut ketiga?", answer: ["40", "40°", "40 derajat"] },
+                    { id: 'q5', text: "Berapakah jumlah total seluruh sudut pada segitiga jenis apapun?", answer: ["180", "180°", "180 derajat"] }
+                ]
+            },
+            5: {
+                type: 'rumpang',
+                title: "Misi 5: Paragraf Rumpang",
+                stimulusTitle: "Membuat Alat Pelacak",
+                stimulusText: "Misi hampir selesai! Raka kini harus merakit alat pelacak berbentuk layang-layang (segiempat). Kerangka pelacak ini terdiri dari dua potong bambu yang disilangkan. Ia harus memastikan rangka ini terpasang dengan sudut dan ukuran yang sangat presisi agar dapat terbang dan bekerja dengan baik.",
+                blanksText: "Untuk membuat rangka pelacak, Raka menyilangkan dua bambu hingga tegak lurus membentuk sudut [0]. Sudut yang besarnya kurang dari ukuran tersebut disebut dengan sudut [1], sedangkan sudut yang terbuka lebar hingga menyerupai garis mendatar disebut sudut [2]. Alat penting yang digunakan Raka untuk mengukur sudut kemiringannya secara akurat adalah [3]. Karena bentuk pelacaknya adalah layang-layang (segiempat), maka jika seluruh sudut di pojok-pojoknya dijumlahkan, totalnya pasti berjumlah [4] derajat.",
+                choices: ["siku-siku", "lancip", "tumpul", "penggaris busur", "360", "180", "lurus"],
+                answers: ["siku-siku", "lancip", "lurus", "penggaris busur", "360"]
+            },
+            6: {
+                type: 'kreasi'
+            }
+        };
+
+        const MENU_DATA = [
+            { id: 1, title: "Misi 1: Pilihan Ganda", desc: "Konsep Dasar Sudut (P6)", color: "blue", type: "pg" },
+            { id: 2, title: "Misi 2: Benar / Salah", desc: "Mengukur Sudut & Jenisnya (P7-P8)", color: "yellow", type: "bs" },
+            { id: 3, title: "Misi 3: Menjodohkan", desc: "Klasifikasi Besar Sudut (P7)", color: "purple", type: "match" },
+            { id: 4, title: "Misi 4: Isian Singkat", desc: "Sudut Hilang Bangun Datar (P9)", color: "orange", type: "isian" },
+            { id: 5, title: "Misi 5: Paragraf Rumpang", desc: "Review Alat & Sudut (P6-P9)", color: "indigo", type: "rumpang" },
+            { id: 6, title: "Misi 6: Tantangan Kreasi", desc: "Membuat Desain Rumah (P7-P9)", color: "green", type: "kreasi" }
+        ];
+
+        // --- APP STATE ---
+        let state = {
+            view: 'intro', playerName: '', playerSchool: '',
+            answers: { 1: {}, 2: {}, 3: {}, 4: {}, 5: [] },
+            currentMissionId: 1, currentPgIndex: 0,
+            matchLeft: null, matchRight: null,
+            ddSelectedWord: null,
+            kreasiAnswer: ""
+        };
+
+        // Initialize empty arrays for DD
+        state.answers[5] = ["", "", "", "", ""];
+
+        // --- FULLSCREEN ---
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+        document.addEventListener('fullscreenchange', () => {
+            const isFs = !!document.fullscreenElement;
+            document.querySelectorAll('.btn-fullscreen .fs-icon').forEach(icon => { icon.setAttribute('data-lucide', isFs ? 'minimize' : 'maximize'); });
+            lucide.createIcons();
+        });
+
+        // --- NAVIGATION LOGIC ---
+        function navigateTo(viewId) {
+            state.view = viewId;
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('view-active'));
+            const header = document.getElementById('global-header');
+
+            if (viewId === 'intro' || viewId === 'menu' || viewId === 'result') {
+                header.classList.add('hidden');
+                document.getElementById(`view-${viewId}`).classList.add('view-active');
+                if(viewId === 'menu') {
+                    document.getElementById('menu-player-name').innerText = state.playerName;
+                    document.getElementById('menu-player-school').innerText = state.playerSchool;
+                    renderMenu();
+                } else if(viewId === 'result') renderResult();
+            } else if (viewId === 'rangkuman') {
+                header.classList.remove('hidden');
+                document.getElementById(`view-rangkuman`).classList.add('view-active');
+                document.getElementById('header-title').innerText = "Buku Panduan Agen";
+                document.getElementById('header-subtitle').innerText = "Konsep Dasar & Jenis Sudut";
+            } else {
+                // Mission 1-6
+                header.classList.remove('hidden');
+                document.getElementById('header-player-name').innerText = state.playerName;
+                
+                if (viewId >= 1 && viewId <= 5) {
+                    state.currentMissionId = viewId;
+                    state.currentPgIndex = 0;
+                    document.getElementById('view-mission').classList.add('view-active');
+                    
+                    const mData = MISSIONS_DATA[viewId];
+                    document.getElementById('header-title').innerText = MENU_DATA[viewId-1].title;
+                    document.getElementById('header-subtitle').innerText = "Mode Layar Terbelah (AKM)";
+                    
+                    document.getElementById('mission-stimulus-title').innerText = mData.stimulusTitle;
+                    document.getElementById('mission-stimulus-text').innerText = mData.stimulusText;
+                    
+                    renderMissionContent();
+                } else if (viewId === 6) {
+                    document.getElementById('view-kreasi').classList.add('view-active');
+                    document.getElementById('header-title').innerText = "Misi 6: Tantangan Kreasi";
+                    document.getElementById('header-subtitle').innerText = "Level Tertinggi (HOTS)";
+                }
+            }
+            lucide.createIcons();
+        }
+
+        // --- INTRO & RESET ---
+        function updateIntroState() {
+            state.playerName = document.getElementById('input-name').value;
+            state.playerSchool = document.getElementById('input-school').value;
+            const btn = document.getElementById('btn-start');
+            if (state.playerName.trim() && state.playerSchool.trim()) {
+                btn.removeAttribute('disabled');
+                btn.className = "w-full mt-4 text-xl font-bold py-4 px-6 rounded-xl transition-all shadow-xl flex items-center justify-center bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white transform hover:scale-105";
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.className = "w-full mt-4 text-xl font-bold py-4 px-6 rounded-xl transition-all shadow-xl flex items-center justify-center bg-gray-300 text-gray-500 cursor-not-allowed";
+            }
+        }
+        function resetAll() {
+            state = { view: 'intro', playerName: '', playerSchool: '', answers: {1:{}, 2:{}, 3:{}, 4:{}, 5:["", "", "", "", ""]}, currentMissionId: 1, currentPgIndex: 0, matchLeft: null, matchRight: null, ddSelectedWord: null, kreasiAnswer: "" };
+            document.getElementById('input-name').value = ''; document.getElementById('input-school').value = ''; document.getElementById('kreasi-input').value = '';
+            updateIntroState(); navigateTo('intro');
+        }
+
+        // --- MENU ---
+        function renderMenu() {
+            const container = document.getElementById('menu-grid');
+            container.innerHTML = MENU_DATA.map(m => {
+                let isDone = false;
+                if(m.id === 1 || m.id === 2 || m.id === 4) isDone = Object.keys(state.answers[m.id]).length === 5;
+                if(m.id === 3) isDone = Object.keys(state.answers[3]).length === 5;
+                if(m.id === 5) isDone = !state.answers[5].includes("");
+                if(m.id === 6) isDone = state.kreasiAnswer.trim() !== "";
+
+                return `
+                <button onclick="navigateTo(${m.id})" class="relative p-5 rounded-2xl bg-white border-4 ${isDone ? 'border-green-400' : 'border-transparent hover:border-'+m.color+'-400'} shadow-md transition-all transform hover:-translate-y-1 text-left flex flex-col justify-between h-[150px]">
+                    ${isDone ? `<div class="absolute top-3 right-3 bg-green-500 text-white rounded-full p-1"><i data-lucide="check-circle" class="w-5 h-5"></i></div>` : ''}
+                    <div class="flex items-center mb-2">
+                        <div class="w-12 h-12 rounded-xl bg-${m.color}-500 text-white flex items-center justify-center font-bold text-xl mr-3 shrink-0">${m.id}</div>
+                        <h3 class="text-xl font-bold text-slate-800 leading-tight">${m.title}</h3>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-snug line-clamp-2">${m.desc}</p>
+                </button>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // --- MISSION RENDERER ---
+        function renderMissionContent() {
+            const mId = state.currentMissionId;
+            const mData = MISSIONS_DATA[mId];
+            const area = document.getElementById('mission-interactive-area');
+            const footer = document.getElementById('mission-footer');
+
+            let html = '', foot = '';
+
+            if (mData.type === 'pg') {
+                const q = mData.items[state.currentPgIndex];
+                html = `
+                    <div class="flex justify-between items-center mb-6 pb-2 border-b-2 border-gray-100">
+                        <h2 class="text-xl font-bold text-slate-800">Pilihan Ganda</h2>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold text-sm">Soal ${state.currentPgIndex + 1} / 5</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-6 text-blue-900 leading-snug">${q.text}</h3>
+                    <div class="grid grid-cols-1 gap-3">
+                        ${q.options.map((opt, idx) => {
+                            const isSel = state.answers[mId][q.id] === idx;
+                            const cls = isSel ? 'bg-blue-500 text-white border-blue-600 scale-[1.02]' : 'bg-white text-slate-700 hover:bg-blue-50 border-blue-200 hover:border-blue-400';
+                            return `<button onclick="setAns('${mId}','${q.id}', ${idx})" class="text-left text-lg px-5 py-4 rounded-xl border-[3px] transition-all font-medium ${cls}">${opt}</button>`;
+                        }).join('')}
+                    </div>`;
+                
+                foot = `
+                    <button onclick="changePg(-1)" class="px-5 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl font-bold text-gray-700 flex items-center ${state.currentPgIndex===0 ? 'opacity-50 cursor-not-allowed' : ''}" ${state.currentPgIndex===0 ? 'disabled' : ''}><i data-lucide="chevron-left" class="mr-2"></i> Sebelumnya</button>
+                    ${state.currentPgIndex < 4 ? `<button onclick="changePg(1)" class="px-5 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold flex items-center">Selanjutnya <i data-lucide="chevron-right" class="ml-2"></i></button>` : `<button onclick="navigateTo('menu')" class="px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold flex items-center shadow-md">Simpan & Menu <i data-lucide="home" class="ml-2"></i></button>`}
+                `;
+            } 
+            else if (mData.type === 'bs') {
+                html = `
+                    <div class="mb-4 pb-2 border-b-2 border-gray-100"><h2 class="text-xl font-bold text-slate-800">Tentukan Benar atau Salah!</h2></div>
+                    <div class="space-y-4 pr-2">
+                        ${mData.items.map((q, idx) => {
+                            const ans = state.answers[mId][q.id];
+                            return `
+                            <div class="bg-yellow-50 border-2 border-yellow-200 p-4 rounded-xl">
+                                <p class="text-lg font-medium text-slate-800 mb-3"><span class="font-bold text-yellow-700">${idx+1}.</span> ${q.text}</p>
+                                <div class="flex gap-4">
+                                    <button onclick="setAns('${mId}','${q.id}', true)" class="flex-1 py-2 rounded-lg border-[3px] font-bold text-lg transition-colors ${ans === true ? 'bg-green-500 text-white border-green-600' : 'bg-white text-green-600 border-green-300 hover:bg-green-50'}"><i data-lucide="check" class="inline w-5 h-5 mr-1"></i> BENAR</button>
+                                    <button onclick="setAns('${mId}','${q.id}', false)" class="flex-1 py-2 rounded-lg border-[3px] font-bold text-lg transition-colors ${ans === false ? 'bg-red-500 text-white border-red-600' : 'bg-white text-red-600 border-red-300 hover:bg-red-50'}"><i data-lucide="x" class="inline w-5 h-5 mr-1"></i> SALAH</button>
+                                </div>
+                            </div>`;
+                        }).join('')}
+                    </div>`;
+                foot = `<div class="w-full flex justify-end"><button onclick="navigateTo('menu')" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold flex items-center shadow-md">Simpan & Menu <i data-lucide="home" class="ml-2"></i></button></div>`;
+            }
+            else if (mData.type === 'match') {
+                html = `<div class="mb-2 pb-2 border-b-2 border-gray-100"><h2 class="text-xl font-bold text-slate-800">Pasangkan Kotak Kiri dan Kanan</h2></div>
+                        <div class="grid grid-cols-2 gap-6 mt-2">
+                            <div class="space-y-3">
+                                ${mData.left.map(l => {
+                                    const isMatched = state.answers[mId][l.id];
+                                    const isSel = state.matchLeft === l.id;
+                                    const cls = isMatched ? 'bg-gray-100 border-gray-300 text-gray-400' : (isSel ? 'bg-purple-500 text-white border-purple-600 scale-105' : 'bg-white border-purple-200 hover:border-purple-400 text-slate-700');
+                                    return `<div class="relative"><button onclick="clickMatch('left','${l.id}')" class="w-full text-left p-3 text-sm font-semibold rounded-xl border-[3px] transition-all ${cls}">${l.text}</button>
+                                    ${isMatched ? `<button onclick="unmatch('${l.id}')" class="absolute -right-3 top-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full p-1 shadow-md z-10"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}</div>`;
+                                }).join('')}
+                            </div>
+                            <div class="space-y-3">
+                                ${mData.right.map(r => {
+                                    const matchedKey = Object.keys(state.answers[mId]).find(k => state.answers[mId][k] === r.id);
+                                    const isSel = state.matchRight === r.id;
+                                    const cls = isSel ? 'bg-pink-500 text-white border-pink-600 scale-105' : 'bg-white border-pink-200 hover:border-pink-400 text-slate-700';
+                                    return `<div class="relative"><button onclick="clickMatch('right','${r.id}')" class="w-full text-center p-3 text-sm font-bold rounded-xl border-[3px] transition-all ${cls}">${r.text}</button>
+                                    ${matchedKey ? `<div class="absolute -left-4 top-1/2 -translate-y-1/2 bg-green-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shadow-md border-2 border-white z-10"><i data-lucide="check"></i></div>` : ''}</div>`;
+                                }).join('')}
+                            </div>
+                        </div>`;
+                foot = `<div class="w-full flex justify-end mt-4"><button onclick="navigateTo('menu')" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold flex items-center shadow-md">Simpan & Menu <i data-lucide="home" class="ml-2"></i></button></div>`;
+            }
+            else if (mData.type === 'isian') {
+                html = `
+                    <div class="mb-4 pb-2 border-b-2 border-gray-100"><h2 class="text-xl font-bold text-slate-800">Isilah dengan Angka yang Tepat!</h2></div>
+                    <div class="space-y-4 pr-2">
+                        ${mData.items.map((q, idx) => {
+                            const val = state.answers[mId][q.id] || "";
+                            return `
+                            <div class="bg-orange-50 border-2 border-orange-200 p-4 rounded-xl">
+                                <p class="text-base font-medium text-slate-800 mb-2"><span class="font-bold text-orange-700">${idx+1}.</span> ${q.text}</p>
+                                <input type="text" oninput="setAns('${mId}','${q.id}', this.value)" value="${val}" placeholder="Ketik jawaban..." class="w-full p-3 text-lg border-2 border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400">
+                            </div>`;
+                        }).join('')}
+                    </div>`;
+                foot = `<div class="w-full flex justify-end"><button onclick="navigateTo('menu')" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold flex items-center shadow-md">Simpan & Menu <i data-lucide="home" class="ml-2"></i></button></div>`;
+            }
+            else if (mData.type === 'rumpang') {
+                let textHtml = mData.blanksText;
+                for(let i=0; i<5; i++) {
+                    const bVal = state.answers[mId][i];
+                    const cls = bVal ? 'bg-indigo-100 border-indigo-500 text-indigo-800' : (state.ddSelectedWord ? 'bg-yellow-100 border-yellow-500 animate-pulse' : 'bg-white border-gray-400 text-transparent');
+                    const btn = `<button onclick="clickDDBlank(${i})" class="mx-1 min-w-[80px] inline-flex justify-center items-center px-3 py-1 rounded-lg border-[3px] border-dashed transition-all font-bold ${cls}">${bVal || "_____"}</button>`;
+                    textHtml = textHtml.replace(`[${i}]`, btn);
+                }
+                const wordsHtml = mData.choices.map(w => {
+                    const isUsed = state.answers[mId].includes(w);
+                    const isSel = state.ddSelectedWord === w;
+                    const cls = isUsed ? 'bg-gray-200 text-gray-400 border-gray-300 opacity-50 cursor-not-allowed' : (isSel ? 'bg-yellow-400 text-yellow-900 border-yellow-600 scale-110' : 'bg-white text-indigo-700 border-indigo-400 hover:bg-indigo-50');
+                    return `<button onclick="clickDDWord('${w}')" class="text-lg font-bold py-2 px-4 rounded-xl shadow-sm border-[3px] transition-transform ${cls}">${w}</button>`;
+                }).join('');
+
+                html = `
+                    <div class="mb-4 pb-2 border-b-2 border-gray-100"><h2 class="text-xl font-bold text-slate-800">Lengkapi Rencana Raka (Tap to Place)</h2></div>
+                    <div class="bg-indigo-50 p-5 rounded-2xl border-2 border-indigo-200 text-lg leading-loose text-slate-800 shadow-inner mb-6">${textHtml}</div>
+                    <div class="flex flex-wrap justify-center gap-3 p-4 bg-gray-100 rounded-xl border border-gray-200">
+                        <h4 class="w-full text-center text-sm font-bold text-gray-500 mb-1 uppercase tracking-widest">Pilihan Kata:</h4>
+                        ${wordsHtml}
+                    </div>`;
+                foot = `<div class="w-full flex justify-end mt-4"><button onclick="navigateTo('menu')" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold flex items-center shadow-md">Simpan & Menu <i data-lucide="home" class="ml-2"></i></button></div>`;
+            }
+
+            area.innerHTML = html;
+            footer.innerHTML = foot;
+            lucide.createIcons();
+        }
+
+        // Action Handlers
+        function changePg(dir) {
+            state.currentPgIndex += dir;
+            renderMissionContent();
+        }
+        function setAns(mId, qId, val) {
+            state.answers[mId][qId] = val;
+            renderMissionContent();
+        }
+
+        function clickMatch(side, id) {
+            const mId = state.currentMissionId;
+            if (side === 'left') {
+                if (state.answers[mId][id]) return;
+                state.matchLeft = (state.matchLeft === id) ? null : id;
+            } else {
+                state.matchRight = (state.matchRight === id) ? null : id;
+            }
+            if (state.matchLeft && state.matchRight) {
+                state.answers[mId][state.matchLeft] = state.matchRight;
+                state.matchLeft = null; state.matchRight = null;
+            }
+            renderMissionContent();
+        }
+        function unmatch(leftId) {
+            delete state.answers[state.currentMissionId][leftId];
+            renderMissionContent();
+        }
+
+        function clickDDWord(w) {
+            const mId = state.currentMissionId;
+            if (state.answers[mId].includes(w)) return;
+            state.ddSelectedWord = (state.ddSelectedWord === w) ? null : w;
+            renderMissionContent();
+        }
+        function clickDDBlank(idx) {
+            const mId = state.currentMissionId;
+            if (state.ddSelectedWord) {
+                state.answers[mId][idx] = state.ddSelectedWord;
+                state.ddSelectedWord = null;
+            } else {
+                state.answers[mId][idx] = "";
+            }
+            renderMissionContent();
+        }
+
+        // --- RESULT ---
+        function renderResult() {
+            let totalScore = 0;
+            let breakdown = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            const POINTS_PER_Q = 4; // Max 20 per misi
+
+            // Misi 1 (PG)
+            MISSIONS_DATA[1].items.forEach(q => { if(state.answers[1][q.id] === q.answer) breakdown[1] += POINTS_PER_Q; });
+            
+            // Misi 2 (B/S)
+            MISSIONS_DATA[2].items.forEach(q => { if(state.answers[2][q.id] === q.answer) breakdown[2] += POINTS_PER_Q; });
+            
+            // Misi 3 (Match)
+            Object.keys(MISSIONS_DATA[3].answers).forEach(lKey => { if(state.answers[3][lKey] === MISSIONS_DATA[3].answers[lKey]) breakdown[3] += POINTS_PER_Q; });
+            
+            // Misi 4 (Isian)
+            MISSIONS_DATA[4].items.forEach(q => { 
+                const ansStr = (state.answers[4][q.id] || "").toString().toLowerCase().trim();
+                const correctArr = q.answer.map(a => a.toLowerCase());
+                if(correctArr.some(c => ansStr === c)) breakdown[4] += POINTS_PER_Q; 
+            });
+
+            // Misi 5 (Rumpang)
+            MISSIONS_DATA[5].answers.forEach((ans, idx) => { if(state.answers[5][idx] === ans) breakdown[5] += POINTS_PER_Q; });
+
+            [1,2,3,4,5].forEach(id => {
+                totalScore += breakdown[id];
+                document.getElementById(`r-m${id}`).innerText = `${breakdown[id]}/20`;
+            });
+
+            document.getElementById('res-identity').innerText = `${state.playerName} - ${state.playerSchool}`;
+            document.getElementById('res-score').innerText = totalScore;
+            
+            document.getElementById('res-kreasi').innerHTML = state.kreasiAnswer || '<span class="italic text-gray-400">Belum ada jawaban.</span>';
+        }
+
+        // INIT
+        lucide.createIcons();
+        navigateTo('intro');
+    </script>
+</body>
+</html>
